@@ -23,11 +23,12 @@
         <c:when test="${ empty sessionScope.user }">
             <section>
                 <form action="${ pageContext.request.contextPath }/login" method="post">
-                    <input type="text" name="login">
-                    <input type="password" name="password">
+                    <input type="text" name="login" placeholder="Login">
+                    <input type="password" name="password" placeholder="Hasło">
                     <input type="submit" value="Loguj">
                 </form>
             </section>
+            <a href="${ pageContext.request.contextPath }/registration">Zarejestruj się</a>
         </c:when>
         <c:otherwise>
             <a href="${ pageContext.request.contextPath }/logout">Wyloguj</a>
