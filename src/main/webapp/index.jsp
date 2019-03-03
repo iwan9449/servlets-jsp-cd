@@ -13,22 +13,37 @@
 
     <h1>Strona główna</h1>
 
-    <c:if test="${ empty sessionScope.user }">
-        <section>
-            <form action="/login" method="post">
-                <input type="text" name="login">
-                <input type="password" name="password">
-                <input type="submit" value="Loguj">
-            </form>
-        </section>
-    </c:if>
-    <c:if test="${ not (empty sessionScope.user) }">
-        <a href="/logout">Wyloguj</a>
+    <c:choose>
+        <c:when test="${ empty sessionScope.user }">
+            <section>
+                <form action="${ pageContext.request.contextPath }/login" method="post">
+                    <input type="text" name="login">
+                    <input type="password" name="password">
+                    <input type="submit" value="Loguj">
+                </form>
+            </section>
+        </c:when>
+        <c:otherwise>
+            <a href="${ pageContext.request.contextPath }/logout">Wyloguj</a>
+        </c:otherwise>
+    </c:choose>
+
+    <c:if test="${ sessionScope.user.isAdmin() }">
+        <a href="${pageContext.request.contextPath}/users">Wyświetl użytkowników</a>
     </c:if>
 
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet animi aspernatur aut autem blanditiis culpa cum cupiditate, distinctio dolorem dolores ea eos et ex facilis fuga fugiat harum illum impedit incidunt laboriosam, libero nobis nulla quam qui quo ratione rem repellendus reprehenderit rerum saepe sed sequi unde ut voluptate?</p>
+    <c:forEach begin="5" end="10" step="1" varStatus="i">
+        <h3>${ i.index }. Lorem ipsum dolor.</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet animi aspernatur aut autem blanditiis culpa cum cupiditate, distinctio dolorem dolores ea eos et ex facilis fuga fugiat harum illum impedit incidunt laboriosam, libero nobis nulla quam qui quo ratione rem repellendus reprehenderit rerum saepe sed sequi unde ut voluptate?</p>
+    </c:forEach>
 
 
 </body>
 </html>
+
+
+
+
+
+
+
