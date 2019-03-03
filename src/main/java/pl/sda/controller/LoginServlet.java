@@ -32,8 +32,7 @@ public class LoginServlet extends HttpServlet {
 
             if (optUser.isPresent()) {
                 session.setAttribute("user", optUser.get());
-                req.getRequestDispatcher("/post.jsp").forward(req, resp);
-                writer.println("Zostałeś zalogowany jako " + optUser.get().getLogin());
+                req.getRequestDispatcher("/index.jsp").forward(req, resp);
             } else {
                 writer.println("Niepoprawne dane logowania");
             }
