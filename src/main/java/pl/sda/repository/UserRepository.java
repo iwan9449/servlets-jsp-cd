@@ -22,9 +22,9 @@ public class UserRepository {
 
     private UserRepository() {
         users = new ArrayList<>();
-        users.add(new User(IdGenerator.next(), "user", "user123", Role.USER));
-        users.add(new User(IdGenerator.next(), "admin", "admin123", Role.ADMIN));
-        users.add(new User(IdGenerator.next(), "test", "test123", Role.USER));
+        save(new User("user", "user123", Role.USER));
+        save(new User("admin", "admin123", Role.ADMIN));
+        save(new User("test", "test123", Role.USER));
     }
 
     public List<User> getUsers() {
@@ -39,6 +39,7 @@ public class UserRepository {
 
 
     public void save(User user) {
+        user.setId(IdGenerator.next());
         users.add(user);
     }
 
