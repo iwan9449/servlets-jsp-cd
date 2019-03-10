@@ -2,6 +2,7 @@ package pl.sda.repository;
 
 import pl.sda.model.User;
 import pl.sda.model.enimeration.Role;
+import pl.sda.util.IdGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +22,9 @@ public class UserRepository {
 
     private UserRepository() {
         users = new ArrayList<>();
-        users.add(new User("user", "user123", Role.USER));
-        users.add(new User("admin", "admin123", Role.ADMIN));
-        users.add(new User("test", "test123", Role.USER));
+        users.add(new User(IdGenerator.next(), "user", "user123", Role.USER));
+        users.add(new User(IdGenerator.next(), "admin", "admin123", Role.ADMIN));
+        users.add(new User(IdGenerator.next(), "test", "test123", Role.USER));
     }
 
     public List<User> getUsers() {

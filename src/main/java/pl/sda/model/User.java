@@ -3,6 +3,7 @@ package pl.sda.model;
 import pl.sda.model.enimeration.Role;
 
 public class User {
+    private Long id;
     private String login;
     private String password;
     private Role role;
@@ -11,7 +12,8 @@ public class User {
 
     }
 
-    public User(String login, String password, Role role) {
+    public User(Long id, String login, String password, Role role) {
+        this.id = id;
         this.login = login;
         this.password = password;
         this.role = role;
@@ -19,6 +21,14 @@ public class User {
 
     public boolean isAdmin() {
         return Role.ADMIN.equals(role);
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLogin() {
