@@ -1,7 +1,7 @@
 package pl.sda.controller;
 
 import pl.sda.model.User;
-import pl.sda.repository.UserRepository;
+import pl.sda.service.UserService;
 import pl.sda.util.Message;
 
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @WebServlet(name = "login", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
-    private UserRepository userRepository = UserRepository.getInstance();
+    private UserService userService = UserService.getInstance();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
             String login = req.getParameter("login");
             String password = req.getParameter("password");
 
-            Optional<User> optUser = userRepository.getUserByLoginData(login, password);
+            Optional<User> optUser = userService.loginUser(login, password);
 
             if (optUser.isPresent()) {
                 session.setAttribute("user", optUser.get());

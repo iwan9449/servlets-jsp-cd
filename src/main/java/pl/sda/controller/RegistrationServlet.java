@@ -1,8 +1,6 @@
 package pl.sda.controller;
 
-import pl.sda.model.User;
-import pl.sda.model.enimeration.Role;
-import pl.sda.repository.UserRepository;
+import pl.sda.service.RegistrationService;
 import pl.sda.util.Message;
 import pl.sda.util.ValidationError;
 
@@ -17,7 +15,7 @@ import java.util.Optional;
 @WebServlet(name = "registration", urlPatterns = "/registration")
 public class RegistrationServlet extends HttpServlet {
 
-    private UserRepository userRepository = UserRepository.getInstance();
+    private RegistrationService registrationService = RegistrationService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,11 +34,10 @@ public class RegistrationServlet extends HttpServlet {
         String password = req.getParameter("password");
         String repeatPassword = req.getParameter("repeatPassword");
 
-        Optional<ValidationError> error = validateUserData(login, password, repeatPassword);
+        Optional<ValidationError> error = registrationService.validateUserData(login, password, repeatPassword);
 
         if (!error.isPresent()) {
-            User user = new User(login, password, Role.USER);
-            userRepository.save(user);
+            registrationService.registerUser(login, password);
             req.setAttribute("message", Message.success("Twoje konto zostało zarejestrowane, możesz się zalogować!"));
             req.getRequestDispatcher("/index.jsp").forward(req, resp);
         } else {
@@ -50,13 +47,4 @@ public class RegistrationServlet extends HttpServlet {
 
     }
 
-    private Optional<ValidationError> validateUserData(String login, String password, String repeatPassword) {
-        Optional<ValidationError> error = Optional.empty();
-        if (userRepository.userExist(login)) {
-            error = Optional.of(new ValidationError("login", "Ten login jest już zajęty!"));
-        } else if (!password.equals(repeatPassword)) {
-            error = Optional.of(new ValidationError("password", "Wpisane hasła nie są takie same!"));
-        }
-        return error;
-    }
 }
