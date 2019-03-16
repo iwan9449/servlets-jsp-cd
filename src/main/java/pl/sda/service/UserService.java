@@ -32,8 +32,4 @@ public class UserService {
         return userRepository.getUsers();
     }
 
-
-    public Optional<User> getUserByLogin(String login) {
-        return userRepository.getUserByLogin(login);
-    }
 }
