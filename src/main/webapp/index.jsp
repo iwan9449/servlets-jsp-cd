@@ -12,45 +12,42 @@
 </head>
 <body>
 
-    <h1>Strona główna</h1>
+<h1>Strona główna</h1>
 
-    <jsp:include page="message.jsp">
-        <jsp:param name="message" value="${ requestScope.message.value }"/>
-        <jsp:param name="type" value="${ requestScope.message.type }"/>
-    </jsp:include>
+<jsp:include page="message.jsp">
+    <jsp:param name="message" value="${ requestScope.message.value }"/>
+    <jsp:param name="type" value="${ requestScope.message.type }"/>
+</jsp:include>
 
-    <c:choose>
-        <c:when test="${ empty sessionScope.user }">
-            <section>
-                <form action="${ pageContext.request.contextPath }/login" method="post">
-                    <input type="text" name="login" placeholder="Login">
-                    <input type="password" name="password" placeholder="Hasło">
-                    <input type="submit" value="Loguj">
-                </form>
-            </section>
-            <a href="${ pageContext.request.contextPath }/registration">Zarejestruj się</a>
-        </c:when>
-        <c:otherwise>
-            <a href="${ pageContext.request.contextPath }/logout">Wyloguj</a>
-        </c:otherwise>
-    </c:choose>
+<c:choose>
+    <c:when test="${ empty sessionScope.user }">
+        <section>
+            <form action="${ pageContext.request.contextPath }/login" method="post">
+                <input type="text" name="login" placeholder="Login">
+                <input type="password" name="password" placeholder="Hasło">
+                <input type="submit" value="Loguj">
+            </form>
+        </section>
+        <a href="${ pageContext.request.contextPath }/registration">Zarejestruj się</a>
+    </c:when>
+    <c:otherwise>
+        <a href="${ pageContext.request.contextPath }/logout">Wyloguj</a>
+    </c:otherwise>
+</c:choose>
 
-    <c:if test="${ sessionScope.user.isAdmin() }">
-        <a href="${pageContext.request.contextPath}/users">Wyświetl użytkowników</a>
-    </c:if>
+<c:if test="${ sessionScope.user.isAdmin() }">
+    <a href="${pageContext.request.contextPath}/users">Wyświetl użytkowników</a>
+</c:if>
 
-    <c:forEach begin="5" end="10" step="1" varStatus="i">
-        <h3>${ i.index }. Lorem ipsum dolor.</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium amet animi aspernatur aut autem blanditiis culpa cum cupiditate, distinctio dolorem dolores ea eos et ex facilis fuga fugiat harum illum impedit incidunt laboriosam, libero nobis nulla quam qui quo ratione rem repellendus reprehenderit rerum saepe sed sequi unde ut voluptate?</p>
-    </c:forEach>
+<c:if test="${ not empty sessionScope.user }">
+    <form action="${pageContext.request.contextPath}/add-post" method="post">
+        <textarea name="text" placeholder="Napisz coś"></textarea>
+        <input type="submit" value="Wyślij">
+    </form>
+</c:if>
+
+<jsp:include page="/posts"/>
 
 
 </body>
 </html>
-
-
-
-
-
-
-

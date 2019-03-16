@@ -31,4 +31,9 @@ public class UserService {
     public List<User> getUsers() {
         return userRepository.getUsers();
     }
+
+
+    public Optional<User> getUserByLogin(String login) {
+        return userRepository.getUserByLogin(login);
+    }
 }
