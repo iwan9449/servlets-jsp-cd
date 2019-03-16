@@ -10,6 +10,8 @@
         <c:param name="id" value="${ post.id }" />
     </c:url>
 
-    <a href="${ deleteUrl }">Usuń post</a>
+    <c:if test="${ sessionScope.user.equals(post.user) || sessionScope.user.isAdmin() }">
+        <a href="${ deleteUrl }">Usuń post</a>
+    </c:if>
 
 </c:forEach>
