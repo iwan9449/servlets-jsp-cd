@@ -12,5 +12,4 @@
 
     <a href="${ deleteUrl }">Usuń post</a>
 
-    <a href="/delete-post?id=${ post.id }">Usuń post</a>
 </c:forEach>

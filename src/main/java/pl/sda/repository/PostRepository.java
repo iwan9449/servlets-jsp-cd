@@ -1,7 +1,6 @@
 package pl.sda.repository;
 
 import pl.sda.model.Post;
-import pl.sda.service.UserService;
 import pl.sda.util.IdGenerator;
 
 import java.time.LocalDateTime;
@@ -15,7 +14,6 @@ public class PostRepository {
 
     private List<Post> posts;
     private static PostRepository instance = null;
-    private UserService userService;
 
     public static PostRepository getInstance() {
         if (instance == null) {
@@ -25,10 +23,7 @@ public class PostRepository {
     }
 
     private PostRepository() {
-        userService = UserService.getInstance();
         posts = new ArrayList<>();
-        save(new Post("przykładowy tekst", userService.getUserByLogin("user").get()));
-        save(new Post("przykładowy tekst jakiś inny", userService.getUserByLogin("admin").get()));
     }
 
     public List<Post> getPosts() {

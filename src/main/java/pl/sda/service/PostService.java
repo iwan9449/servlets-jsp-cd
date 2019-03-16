@@ -31,7 +31,12 @@ public class PostService {
     }
 
     public Optional<Post> deletePost(Long id) {
-        return postRepository.deletePost(id);
+        Optional<Post> optRemovedPost = postRepository.getPost(id);
+        if (optRemovedPost.isPresent()) {
+            return postRepository.deletePost(id);
+        } else {
+            return optRemovedPost;
+        }
     }
 
     public boolean updatePost(String newText, Long id) {
@@ -55,5 +60,9 @@ public class PostService {
             error = Optional.of(new ValidationError("text", "Dodawany post nie może być pusty!"));
         }
         return error;
+    }
+
+    public Optional<Post> getPost(Long id) {
+        return postRepository.getPost(id);
     }
 }

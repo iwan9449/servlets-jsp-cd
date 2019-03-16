@@ -1,6 +1,7 @@
 package pl.sda.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Post {
     private Long id;
@@ -43,5 +44,21 @@ public class Post {
 
     public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(id, post.id) &&
+                Objects.equals(text, post.text) &&
+                Objects.equals(user, post.user) &&
+                Objects.equals(createdDate, post.createdDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, text, user, createdDate);
     }
 }
