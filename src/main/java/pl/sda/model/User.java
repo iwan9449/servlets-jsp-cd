@@ -22,7 +22,7 @@ public class User {
         this.role = role;
     }
 
-    public Document getUserAsDocument() {
+    public Document getAsDocument() {
         Document doc = new Document("login", login)
                             .append("password", password)
                             .append("role", role.name());

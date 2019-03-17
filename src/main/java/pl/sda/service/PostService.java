@@ -30,7 +30,7 @@ public class PostService {
         postRepository.save(postToAdd);
     }
 
-    public Optional<Post> deletePost(Long id) {
+    public Optional<Post> deletePost(String id) {
         Optional<Post> optRemovedPost = postRepository.getPost(id);
         if (optRemovedPost.isPresent()) {
             return postRepository.deletePost(id);
@@ -39,7 +39,7 @@ public class PostService {
         }
     }
 
-    public boolean updatePost(String newText, Long id) {
+    public boolean updatePost(String newText, String id) {
         Optional<Post> optUpdatedPost = postRepository.getPost(id);
         if (optUpdatedPost.isPresent()) {
             Post updatedPost = optUpdatedPost.get();
@@ -62,7 +62,7 @@ public class PostService {
         return error;
     }
 
-    public Optional<Post> getPost(Long id) {
+    public Optional<Post> getPost(String id) {
         return postRepository.getPost(id);
     }
 }

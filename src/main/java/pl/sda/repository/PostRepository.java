@@ -1,19 +1,24 @@
 package pl.sda.repository;
 
+import com.google.common.collect.Lists;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+import pl.sda.config.DbUtil;
 import pl.sda.model.Post;
-import pl.sda.util.IdGenerator;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.OptionalInt;
-import java.util.stream.IntStream;
+import java.util.stream.Collectors;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class PostRepository {
 
-    private List<Post> posts;
     private static PostRepository instance = null;
+    MongoCollection<Document> posts;
 
     public static PostRepository getInstance() {
         if (instance == null) {
@@ -23,36 +28,37 @@ public class PostRepository {
     }
 
     private PostRepository() {
-        posts = new ArrayList<>();
+        posts = DbUtil.getConnection().getCollection("posts");
     }
 
     public List<Post> getPosts() {
-        return posts;
+        FindIterable<Document> documents = posts.find();
+        return Lists.newArrayList(documents).stream()
+                .map(Post::fromDocument)
+                .collect(Collectors.toList());
     }
 
     public void save(Post post) {
-        post.setId(IdGenerator.next());
         post.setCreatedDate(LocalDateTime.now());
-        posts.add(post);
+        posts.insertOne(post.getAsDocument());
     }
 
-    public Optional<Post> getPost(Long id) {
-        return posts.stream().filter(post -> post.getId().equals(id)).findFirst();
+    public Optional<Post> getPost(String id) {
+        return Optional.ofNullable(Post.fromDocument(posts.find(eq("_id", new ObjectId(id))).first()));
     }
 
     public boolean update(Post post) {
-        OptionalInt optIndex = IntStream.range(0, posts.size()).filter(i -> post.getId().equals(posts.get(i).getId())).findFirst();
-        if (optIndex.isPresent()) {
-            posts.set(optIndex.getAsInt(), post);
-            return true;
-        } else {
-            return false;
-        }
+//        OptionalInt optIndex = IntStream.range(0, posts.size()).filter(i -> post.getId().equals(posts.get(i).getId())).findFirst();
+//        if (optIndex.isPresent()) {
+//            posts.set(optIndex.getAsInt(), post);
+//            return true;
+//        } else {
+//            return false;
+//        }
+        return true;
     }
 
-    public Optional<Post> deletePost(Long id) {
-        Optional<Post> optRemovedPost = getPost(id);
-        optRemovedPost.ifPresent(removedPost -> posts.removeIf(post -> post.equals(removedPost)));
-        return optRemovedPost;
+    public Optional<Post> deletePost(String id) {
+        return Optional.ofNullable(Post.fromDocument(posts.findOneAndDelete(eq("_id", new ObjectId(id)))));
     }
 }

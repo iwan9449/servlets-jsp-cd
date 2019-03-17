@@ -55,7 +55,7 @@ public class UserRepository {
     public void save(User user) {
 
         if (!userExist(user.getLogin())) {
-            users.insertOne(user.getUserAsDocument());
+            users.insertOne(user.getAsDocument());
         }
     }
 

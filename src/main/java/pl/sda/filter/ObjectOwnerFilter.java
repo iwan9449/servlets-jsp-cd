@@ -1,6 +1,5 @@
 package pl.sda.filter;
 
-import org.apache.commons.lang3.math.NumberUtils;
 import pl.sda.model.Post;
 import pl.sda.model.User;
 import pl.sda.service.PostService;
@@ -25,19 +24,16 @@ public class ObjectOwnerFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        String strId = req.getParameter("id");
-        if (NumberUtils.isNumber(strId)) {
-            Long id = Long.parseLong(strId);
-            Optional<Post> optPost = postService.getPost(id);
-            if (optPost.isPresent()) {
-                Post post = optPost.get();
-                User postAuthor = post.getUser();
-                User loggedUser = (User) ((HttpServletRequest) req).getSession().getAttribute("user");
-                if (postAuthor.equals(loggedUser) || (Objects.nonNull(loggedUser) && loggedUser.isAdmin())) {
-                    filterChain.doFilter(req, resp);
-                } else {
-                    req.setAttribute("message", Message.error("Nie masz uprawnień!"));
-                }
+        String id = req.getParameter("id");
+        Optional<Post> optPost = postService.getPost(id);
+        if (optPost.isPresent()) {
+            Post post = optPost.get();
+            User postAuthor = post.getUser();
+            User loggedUser = (User) ((HttpServletRequest) req).getSession().getAttribute("user");
+            if (postAuthor.equals(loggedUser) || (Objects.nonNull(loggedUser) && loggedUser.isAdmin())) {
+                filterChain.doFilter(req, resp);
+            } else {
+                req.setAttribute("message", Message.error("Nie masz uprawnień!"));
             }
         }
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
