@@ -2,6 +2,7 @@ package pl.sda.controller;
 
 import pl.sda.model.User;
 import pl.sda.service.PostService;
+import pl.sda.util.Message;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,12 +18,10 @@ public class AddPostServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String text = req.getParameter("text");
         User user = (User) req.getSession().getAttribute("user");
-
         postService.addPost(text, user);
-
+        req.setAttribute("message", Message.success("Post został dodany!"));
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
     }
 

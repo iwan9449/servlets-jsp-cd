@@ -48,14 +48,7 @@ public class PostRepository {
     }
 
     public boolean update(Post post) {
-//        OptionalInt optIndex = IntStream.range(0, posts.size()).filter(i -> post.getId().equals(posts.get(i).getId())).findFirst();
-//        if (optIndex.isPresent()) {
-//            posts.set(optIndex.getAsInt(), post);
-//            return true;
-//        } else {
-//            return false;
-//        }
-        return true;
+        return posts.updateOne(eq("_id", new ObjectId(post.getId())), new Document("$set", post.getAsDocument())).isModifiedCountAvailable();
     }
 
     public Optional<Post> deletePost(String id) {
